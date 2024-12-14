@@ -112,9 +112,6 @@ function CreateStudent() {
       case 'ci_representante':
         updateState(9);
         break;
-      case 'telefono':
-        updateState(12);
-        break
       default:
         setFormData(prev => ({
           ...prev,
@@ -319,7 +316,7 @@ function CreateStudent() {
                   </select>
                 </div>
                 <div>
-                  <p>Seccion</p>
+                  <p>Sección</p>
                   <select
                     value={ selectedSection.id }
                     onChange={(e) => {addToSelectedSection(e.target.value, sections.map((section) => section.id === e.target.value && section.nombre))}}
@@ -347,7 +344,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Nombre Completo</p>
+                  <p>Nombre Completo del Estudiante</p>
                   <input
                     type="text"
                     name='nombre_completo_estudiante'
@@ -360,7 +357,7 @@ function CreateStudent() {
                 </div>
                 <div className="small-gap">
                   <div className='alg-center'>
-                    <p>Dia</p>
+                    <p>Día</p>
                     <input
                       type="number"
                       min="1"
@@ -423,7 +420,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Con quien vive</p>
+                  <p>Con quién vive</p>
                   <input
                     type="text"
                     name='con_quien_vive'
@@ -435,7 +432,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Quien lo retira</p>
+                  <p>Quién lo retira</p>
                   <input
                     type="text"
                     name='quien_lo_retira'
@@ -451,7 +448,7 @@ function CreateStudent() {
               <h3>Salud del Estudiante</h3>
               <section className='sections-create-student'>
                 <div>
-                  <p>Alergico</p>
+                  <p>Alérgico</p>
                   <input
                     type="text"
                     name='alergico'
@@ -475,7 +472,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div className='mx-6'>
-                  <p>Informe Medico</p>
+                  <p>Informe Médico</p>
 
                   <div className="!flex-row mt-2">
                     <input
@@ -607,7 +604,7 @@ function CreateStudent() {
               <section className='sections-create-student'>
                 <div className="small-gap">
                   <div className='alg-center'>
-                    <p>P.kg</p>
+                    <p>Peso (kg)</p>
                     <input 
                       type="text"
                       name='p_kg'
@@ -619,7 +616,7 @@ function CreateStudent() {
                     />
                   </div>
                   <div className='alg-center'>
-                    <p>Tc</p>
+                    <p>Talla Cuello</p>
                     <input 
                       type="text"
                       name='tc'
@@ -631,7 +628,7 @@ function CreateStudent() {
                     />
                   </div>
                   <div className='alg-center'>
-                    <p>P</p>
+                    <p>Pantalón</p>
                     <input 
                       type="text"
                       name='p'
@@ -643,7 +640,7 @@ function CreateStudent() {
                     />
                   </div>
                   <div className='alg-center'>
-                    <p>C</p>
+                    <p>Camisa</p>
                     <input 
                       type="text"
                       name='c'
@@ -655,7 +652,7 @@ function CreateStudent() {
                     />
                   </div>
                   <div className='alg-center'>
-                    <p>Z</p>
+                    <p>Zapato</p>
                     <input 
                       type="text"
                       name='z'
@@ -669,7 +666,7 @@ function CreateStudent() {
                 </div>
               </section>
 
-              <h3>Obsevacion</h3>
+              <h3>Observación <span className='font-light text-black/50'>(Opcional)</span></h3>
               <section className='sections-create-student'>
                 <input 
                     type="text"
@@ -684,7 +681,7 @@ function CreateStudent() {
               <h3>Representante</h3>
               <section className='sections-create-student'>
                 <div>
-                  <p>Nombre Completo</p>
+                  <p>Nombre Completo del Representante</p>
                   <input 
                     type="text"
                     name='nombre_completo_representante'
@@ -696,7 +693,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>CI</p>
+                  <p>Cédula de Identidad</p>
                   <input 
                     type="number"
                     name='ci_representante'
@@ -720,9 +717,9 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Telefono</p>
+                  <p>Teléfono</p>
                   <input 
-                    type="number"
+                    type="text"
                     name='telefono'
                     value={formData.telefono}
                     autoComplete='off'
@@ -732,7 +729,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Direccion</p>
+                  <p>Dirección</p>
                   <input 
                     type="text"
                     name='direccion'
@@ -744,7 +741,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Ocupacion</p>
+                  <p>Ocupación</p>
                   <input 
                     type="text"
                     name='ocupacion'
@@ -756,7 +753,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Correo</p>
+                  <p>Correo <span className='font-light text-black/50'>(Opcional)</span></p>
                   <input 
                     type="text"
                     name='correo'
@@ -768,7 +765,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Religion</p>
+                  <p>Religión</p>
                   <input 
                     type="text"
                     name='religion'
@@ -783,7 +780,7 @@ function CreateStudent() {
               <h3>Carnet de la Patria</h3>
               <section className='sections-create-student'>
                 <div>
-                  <p>Codigo</p>
+                  <p>Código</p>
                   <input 
                     type="number"
                     name='codigo_patria'
@@ -810,7 +807,7 @@ function CreateStudent() {
               
               <section className='sections-create-student'>
                 <div>
-                  <p>Comités de la 058</p>
+                  <p>Comités de la 058 <span className='font-light text-black/50'>(Opcional)</span></p>
                   <input 
                     type="text"
                     name='comites_058'
@@ -822,7 +819,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Movimiento Bolivariano de Familia</p>
+                  <p>Movimiento Bolivariano de Familia <span className='font-light text-black/50'>(Opcional)</span></p>
                   <div className='!flex-row mt-2'>
                     <div className='!flex-row'>
                       <input

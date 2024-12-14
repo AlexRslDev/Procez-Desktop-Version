@@ -56,7 +56,7 @@ function Aside({user, onLogin}) {
         </div>
         <div className="logout-aside" onClick={onLogin}>
           <img src="./src/assets/arrow-right-from-bracket-solid.svg" />
-          <p>Cerrar Sesion</p>
+          <p>Cerrar Sesión</p>
         </div>
       </footer>
     </aside>

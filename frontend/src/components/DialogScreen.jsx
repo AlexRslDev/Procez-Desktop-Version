@@ -21,7 +21,7 @@ const DialogScreen = ({ isOpen, onClose, student, grades, sections, hadleData, h
       animate={animateProps}
       transition={{ duration:0.25}}
       className="w-3/5 h-4/5 bg-white p-7 rounded-lg shadow overflow-y-auto overflow-x-hidden">
-        <h2 className="font-semibold">Informacion del Estudiante</h2>
+        <h2 className="font-semibold">Información del Estudiante</h2>
         {student && (
           <StudentTemplate student={student} grades={grades} sections={sections} />
         )}

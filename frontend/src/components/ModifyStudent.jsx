@@ -154,8 +154,8 @@ function ModifyStudent() {
               <th>CE / CI</th>
               <th>Representante</th>
               <th>Grado</th>
-              <th>Seccion</th>
-              <th>Accion</th>
+              <th>Sección</th>
+              <th>Acción</th>
             </tr>
           </thead>
           <tbody>

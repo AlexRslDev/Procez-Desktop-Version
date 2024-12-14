@@ -2,40 +2,40 @@ const SectionChild = ({ enableInputs=false, label, value }) => {
 
   const handleInputWidth = (name) => {
     switch (name) {
-      case 'Seccion':
-      case 'Dia':
+      case 'Sección':
+      case 'Día':
       case 'Mes':
       case 'Año':
       case 'Edad':
-      case 'Alergico':
+      case 'Alérgico':
       case 'Medicamento':
-      case 'Informe Medico':
-      case 'P.kg':
-      case 'Tc':
-      case 'P':
-      case 'C':
-      case 'Z':
+      case 'Informe Médico':
+      case 'Peso (kg)':
+      case 'Talla Cuello':
+      case 'Pantalón':
+      case 'Camisa':
+      case 'Zapato':
       
         return 'w-small-input';
       
-      case 'Nombre Completo':
-      case 'Obsevacion':
+      case 'Nombre Completo del Estudiante':
+      case 'Observación':
       case 'Nombre Completo del Representante':
-      case 'Direccion':
+      case 'Dirección':
       case 'Correo':
+      case 'Teléfono':
 
         return 'w-full-input';
       
       case 'CI o CE':
-      case 'Con quien vive':
-      case 'Quien lo retira':
+      case 'Con quién vive':
+      case 'Quién lo retira':
       case 'CI del Representante':
-      case 'Telefono':
-      case 'Ocupacion':
-      case 'Codigo':
+      case 'Ocupación':
+      case 'Código':
       case 'Serial':
       case 'Movimiento Bolivariano de Familia':
-      case 'Comites de la 058':
+      case 'Comités de la 058':
 
         return 'w-medium-input'
       

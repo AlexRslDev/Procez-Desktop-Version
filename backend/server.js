@@ -292,7 +292,7 @@ const generateHtmlTemplate = (rows, grade, section) => {
     'p': 'P',
     'c': 'C',
     'z': 'Z',
-    'alergico': 'Alergico',
+    'alergico': 'Alérgico',
     'medicamento': 'Medicamento',
     'religion': 'Religión',
     'informe_medico': 'Informe Médico',
@@ -305,7 +305,7 @@ const generateHtmlTemplate = (rows, grade, section) => {
     'primera_dosis': 'Primera Dosis',
     'segunda_dosis': 'Segunda Dosis',
     'tercera_dosis': 'Tercera Dosis',
-    'comites_058': 'Comites de la 058',
+    'comites_058': 'Comités de la 058',
     'movimiento_de_familia': 'Movimiento de Familia',
     'firma': 'Firma'
   };

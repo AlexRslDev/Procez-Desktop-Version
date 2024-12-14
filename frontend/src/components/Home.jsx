@@ -85,7 +85,7 @@ function Home() {
         </div>
 
         <div className="w-auto h-24 flex flex-col justify-center gap-3 px-6 rounded-lg bg-[#F6F6F6]">
-          <span className="text-black/80 text-sm">Ultimo Alumno Registrado</span>
+          <span className="text-black/80 text-sm">Último Alumno Registrado</span>
           <div className="flex items-center gap-4">
             <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center">
               <img src={Calendar} className="w-auto h-5" />
