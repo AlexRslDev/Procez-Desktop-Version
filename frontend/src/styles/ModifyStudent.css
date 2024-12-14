@@ -1,0 +1,67 @@
+th {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.load-more-mod-std {
+  padding: 15px 30px;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.load-more-mod-std:hover {
+  background-color: black;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #F4F3FF;
+}
+
+.trStd {
+  transition: all .2s ease;
+}
+
+.trStd:hover {
+  background-color: #b1d2cb;
+  cursor: pointer;
+}
+
+th:nth-child(1) { width: 170px; } /* Width for Nombre */
+th:nth-child(2) { width: 100px; } /* Width for CE / CI */
+th:nth-child(3) { width: 170px; } /* Width for Representante */
+th:nth-child(4) { width: 100px; } /* Width for Grado */
+th:nth-child(5) { width: 50px; }
+th:nth-child(6) { width: 90px; }
+
+td {
+  overflow: auto;
+  max-width: 150px;
+  padding: 14px 8px;
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+td::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+  height: 12px; /* Height of the scrollbar */
+}
+
+td::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners */
+}
+
+td::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 4px; /* Rounded corners */
+}

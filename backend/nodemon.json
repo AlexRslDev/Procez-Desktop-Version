@@ -1,0 +1,6 @@
+{
+  "watch": ["db", "server.js"],
+  "ext": "js,json,db",
+  "ignore": ["uploads/*"],
+  "exec": "node server.js"
+}

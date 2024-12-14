@@ -1,0 +1,180 @@
+input {
+  font-size: 16px;
+}
+input:focus {
+  outline: none;
+}
+
+.Create-Student-Container {
+  width: 90%;
+  height: auto;
+  margin-top: 50px;
+}
+
+.form-create-student {
+ padding-bottom: 50px;
+}
+
+.form-create-student h3 {
+  margin-top: 40px;
+}
+
+.sections-create-student {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.sections-create-student div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vacunas {
+  margin-top: 50px;
+}
+
+.full-input, .medium-input, .small-input, .super-small-input {
+  height: 40px;
+  padding-left: 8px;
+  border: .2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.full-input {
+  width: 360px;
+}
+.medium-input {
+  width: 210px;
+}
+.small-input {
+  width: 110px;
+}
+.super-small-input {
+  width: 80px;
+}
+.alg-center {
+  align-items: center;
+}
+
+
+.next-btn-create-student, .back-btn-create-student, .success-std-created > button {
+  width: 110px;
+  height: 50px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+
+.next-btn-create-student {
+  color: white;
+  background-color: #1E075F;
+}
+
+.next-btn-create-student:hover {
+  background-color: #683EC0;
+}
+
+.back-btn-create-student:hover, .success-std-created > button:hover {
+  background-color: #0D111D;
+  color: white;
+}
+
+.back-btn-create-student, .success-std-created > button {
+  color: black;
+  background-color: transparent;
+  border: 1.5px solid rgba(13, 17, 29, 0.8);
+}
+
+.container-steps-create-student {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.process-create-student-state-line {
+  display: flex;
+  align-items: center;
+}
+
+.left-line, .right-line {
+  border-radius: 2px;
+}
+
+.left-line {
+  width: 180px;
+  height: 2px;
+}
+
+.right-line {
+  width: 310px;
+  height: 2px;
+}
+
+.ball-line {
+  width: 20px;
+  height: 20px;
+  background-color: #1E075F;
+  border-radius: 50%;
+}
+
+.bg-1-process {
+  background-color: #1E075F;
+}
+.bg-2-process {
+  background-color: #683EC0;
+}
+
+.mrg-btm-50 {
+  margin-bottom: 50px;
+}
+
+.select-create-student {
+  width: auto;
+  height: 40px;
+  padding: 0 5px;
+  background-color: white;
+  border: .2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.select-create-student:focus {
+  outline: none;
+}
+
+.small-gap {
+  display: flex;
+  flex-direction: row !important;
+  gap: 1rem;
+}
+
+.success-std-created {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+.success-std-created > img {
+  width: auto;
+  height: 350px;
+}
+
+
+@media screen and (max-width: 1063px) {
+  .left-line {
+    width: 130px;
+  }
+  .right-line {
+    width: 200px;
+  }
+}

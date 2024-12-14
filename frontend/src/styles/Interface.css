@@ -1,0 +1,15 @@
+.interface-container {
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  background-color: white;
+}
+
+.routes {
+  width: calc(100% - 241px);
+  height: auto;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: none;
+}

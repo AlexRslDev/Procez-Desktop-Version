@@ -1,0 +1,134 @@
+.login-container {
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  background-color: white;
+}
+
+.left-login {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-login {
+  width: calc(100% - 40%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.right-login img {
+  width: 100%;
+  height: 92%;  
+  object-fit: cover;
+  object-position: 0 20%;
+  border-radius: 18px;
+  margin-right: 5%;
+}
+
+.procez-logo {
+  width: auto;
+  height: 60px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+.login-window {
+  width: 480px;
+  height: 444px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-window h2 {
+  margin-bottom: 12px;
+}
+
+.login-window p {
+  opacity: 75%;
+}
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 37px;
+}
+
+.input-container-login {
+  position: relative;
+  display: inline-block;
+}
+
+.input-container-login input {
+  padding-left: 60px;
+  background-color: #F6F7F9;
+}
+
+.input-container-login input:focus {
+  outline: none;
+}
+
+.input-container-login .icon {
+  position: absolute;
+  left: 8px; 
+  top: 50%;
+  padding: 2.5px 5px;
+  border-radius: 3.5px;
+  background-color: white;
+  transform: translateY(-50%);
+  pointer-events: none; /* Evitar que la imagen interfiera con el input */
+}
+
+.input-container-login img {
+  user-select: none;
+}
+
+.form-login input, .form-login button {
+  width: 360px;
+  height: 55px;
+  border: none;
+  border-radius: 9px;
+}
+
+.form-login button {
+  /*background-color: #157AFF;*/
+  background-color: #683EC0;
+  margin-top: 20px;
+  color: white;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.form-login button:hover {
+  background-color: #3A90DB;
+}
+
+.login-window h2, .login-window p, .login-window button {
+  user-select: none;
+}
+
+@media screen and (max-width: 1319px) {
+  .left-login {
+    width: 45%;
+  }
+  .right-login {
+    width: calc(100% - 45%);
+  }
+}
+@media screen and (max-width: 1099px) {
+  .left-login {
+    width: 50%;
+  }
+  .right-login {
+    width: calc(100% - 50%);
+  }
+}
