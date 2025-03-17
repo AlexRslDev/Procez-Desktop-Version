@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { motion } from 'motion/react';
-import { useFormData } from './FormDataContex';
-import Spinner from './Spinner';
+import { useFormData } from '../FormDataContex';
+import Spinner from '../Spinner';
 
 function GenerateSheet() {
   const [grades, setGrades] = useState([]);
@@ -72,6 +72,7 @@ function GenerateSheet() {
       setIsSent(true);     // Indicate that the PDF is ready
       const othersValue = homeValues[0].value;
       handleChangeHome(othersValue && Number(othersValue) + 1, 1);
+      resetFormData();
     } catch (error) {
       console.error('Error fetching PDF:', error);
     } finally {
@@ -88,7 +89,6 @@ function GenerateSheet() {
       a.download = 'sabana.pdf';  // Set the default filename
       a.click();
       setIsSent(false);
-      resetFormData();
     }
   };
 

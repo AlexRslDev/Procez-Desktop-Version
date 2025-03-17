@@ -44,8 +44,9 @@ const GridHome = () => {
       </div>
       
       <div 
-      onClick={() => handleOpenDialog('institucion')}
-      className="col-span-1 row-span-6 flex flex-col gap-6 w-[475px] h-[350px]  px-7 pt-4 bg-[#BADEFC] rounded-xl z-10 mid:w-[410px] cursor-pointer transition-all hover:scale-105 mid:h-full">
+        onClick={() => handleOpenDialog('institucion')}
+        className="col-span-1 row-span-6 flex flex-col gap-6 w-[475px] h-[350px]  px-7 pt-4 bg-[#BADEFC] rounded-xl z-10 mid:w-[410px] cursor-pointer transition-all hover:scale-105 mid:h-full"
+      >
         <div className='flex justify-between'>
           <img src={School} alt="Creadores" className='h-8' />
           <img src={ArrowUp} alt="Mas detalles" className='h-8' />

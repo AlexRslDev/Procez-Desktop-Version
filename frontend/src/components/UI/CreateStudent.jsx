@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import axios from 'axios';
-import { useFormData } from './FormDataContex';
-import '../styles/CreateStudent.css';
+import { useFormData } from '../FormDataContex';
+import '../../styles/CreateStudent.css';
 
 function CreateStudent() {
   const [currentStep, setCurrentStep] = useState(1);

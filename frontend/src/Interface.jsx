@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Aside from './components/Aside';
-import Home from './components/Home';
-import CreateStudent from './components/CreateStudent';
-import ModifyStudent from './components/ModifyStudent';
+import Aside from './components/UI/Aside';
+import Home from './components/UI/Home';
+import CreateStudent from './components/UI/CreateStudent';
+import ModifyStudent from './components/UI/ModifyStudent';
 import UserManual from './components/UI/UserManual';
-import GenerateSheet from './components/GenerateSheet';
+import GenerateSheet from './components/UI/GenerateSheet';
 import ImportExportDatabase from './components/UI/ImportExportDatabase';
 import { FormDataProvider } from './components/FormDataContex';
 import './styles/Interface.css';

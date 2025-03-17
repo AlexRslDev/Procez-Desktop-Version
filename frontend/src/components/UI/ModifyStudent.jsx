@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'motion/react';
-import DialogScreen from './DialogScreen';
-import DeleteStudentDialog from './DeleteStudentDialog';
-import { useFormData } from './FormDataContex';
-import SearchStudent from './SearchStudent';
-import DropdownMenu from './DropdownMenu';
-import '../styles/ModifyStudent.css';
+import DialogScreen from '../DialogScreen';
+import DeleteStudentDialog from '../DeleteStudentDialog';
+import { useFormData } from '../FormDataContex';
+import SearchStudent from '../SearchStudent';
+import DropdownMenu from '../DropdownMenu';
+import '../../styles/ModifyStudent.css';
 
 function ModifyStudent() {
   const [students, setStudents] = useState([]);

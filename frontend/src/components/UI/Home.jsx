@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { motion } from 'motion/react';
-import GridHome from './GridHome';
-import Folder from '../assets/folder-closed-solid.svg';
-import PdfIcon from '../assets/file-pdf-solid.svg';
-import Health from '../assets/hospital-user-solid.svg';
-import Calendar from '../assets/calendar-check-solid.svg';
+import GridHome from '../GridHome';
+import Folder from '/folder-closed-solid.svg';
+import PdfIcon from '/file-pdf-solid.svg';
+import Health from '/hospital-user-solid.svg';
+import Calendar from '/calendar-check-solid.svg';
 
 
 /*
