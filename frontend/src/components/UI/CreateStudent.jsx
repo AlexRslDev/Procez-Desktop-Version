@@ -26,31 +26,11 @@ function CreateStudent() {
       setGrades(response.data);
     };
 
-    const fetchOthers = async () => {
-      const response = await axios.get('http://localhost:5000/api/others');
+    const fetchHomeValues = async () => {
+      const response = await axios.get('http://localhost:5000/api/home-data');
       setHomeValues(response.data);
     }
 
-    fetchGrades();
-    fetchOthers();
-  }, []);
-
-  useEffect(() => {
-    console.log(selectedGrade.id)
-    // Obtener secciones cuando se selecciona un grado
-    const fetchSections = async () => {
-      if (selectedGrade.id) {
-        const response = await axios.get(`http://localhost:5000/api/sections?grade_id=${selectedGrade.id}`);
-        setSections(response.data);
-      } else {
-        setSections([]);
-      }
-    };
-
-    fetchSections();
-  }, [selectedGrade.id]);
-
-  useEffect(() => {
     const fetchCeCiValues = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/students/ce_ci');
@@ -65,8 +45,24 @@ function CreateStudent() {
       }
     };
 
+    fetchGrades();
+    fetchHomeValues();
     fetchCeCiValues();
   }, []);
+
+  useEffect(() => {
+    // Obtener secciones cuando se selecciona un grado
+    const fetchSections = async () => {
+      if (selectedGrade.id) {
+        const response = await axios.get(`http://localhost:5000/api/sections?grade_id=${selectedGrade.id}`);
+        setSections(response.data);
+      } else {
+        setSections([]);
+      }
+    };
+
+    fetchSections();
+  }, [selectedGrade.id]);
 
   // Manejar cambios en los inputs
   const handleChange = (e) => {
@@ -94,24 +90,31 @@ function CreateStudent() {
     };
 
     switch (name) {
-      case 'd':
-      case 'm':
-      case 'edad':
-        updateState(3);
-        break;
-      case 'a':
-        updateState(5);
-        break;
       case 'ce_ci':
         updateState(12);
         break;
+
       case 'serial_patria':
       case 'codigo_patria':
         updateState(11);
         break;
+
       case 'ci_representante':
         updateState(9);
         break;
+
+      case 'fecha_nacimiento':
+        setFormData(prev => ({
+          ...prev,
+          [name]: value,
+        }));
+
+        setFormData(prev => ({
+          ...prev,
+          ['edad']: calcularEdad(value),
+        }));
+        break;
+
       default:
         setFormData(prev => ({
           ...prev,
@@ -137,38 +140,18 @@ function CreateStudent() {
       const requiredFields = [
         "ce_ci",
         "nombre_completo_estudiante",
-        "d",
-        "m",
-        "a",
+        "fecha_nacimiento",
         "edad",
-        "lugar_de_nacimiento",
+        "sexo",
         "nombre_completo_representante",
         "ci_representante",
-        "parentesco",
-        "direccion",
         "telefono",
-        "ocupacion",
-        "p_kg",
-        "tc",
-        "p",
-        "c",
-        "z",
-        "alergico",
-        "medicamento",
-        "religion",
-        "informe_medico",
-        "con_quien_vive",
-        "quien_lo_retira",
-        "codigo_patria",
-        "serial_patria",
-        "primera_dosis",
-        "segunda_dosis",
-        "tercera_dosis",
         "seccion_id",
         "grado_id"
       ];
 
       // Crea un nuevo objeto con seccion_id agregado
+
       const finalFormData = {
         ...formData,
         seccion_id: selectedSection.id,
@@ -202,7 +185,7 @@ function CreateStudent() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(finalFormData), // Envía los datos en formato JSON
+            body: JSON.stringify(finalFormData),
         });
 
         if (!response.ok) {
@@ -211,11 +194,12 @@ function CreateStudent() {
 
         const data = await response.json();
         console.log('Respuesta del servidor:', data);
+
         // Restablecer los datos a su punto inicial en Global Data Context
         resetFormData();
         nextStep();
         //alert('Estudiante Agregado Exitosamente');
-        const othersValue = homeValues[1].value;
+        //const othersValue = homeValues[1].value;
         handleChangeHome(getCurrentData(), 2);
       } catch (error) {
         console.error('Error al enviar el formulario:', error);
@@ -287,6 +271,24 @@ function CreateStudent() {
     return `${day}/${month}/${year}`;
   };
 
+  function calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+  
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+  
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+      edad--;
+    }
+    
+    if (edad < 10) {
+      edad = '0' + edad;
+    }
+
+    return edad;
+  }
+
   return (
       <motion.div 
       initial={{ opacity:0 }}
@@ -295,15 +297,18 @@ function CreateStudent() {
       className="Create-Student-Container">
         <h2 className='mrg-btm-50 text-2xl font-semibold'>{isNew ? 'Crear Estudiante' : 'Modificar Estudiante'}</h2>
         <form onSubmit={handleSubmit} className='form-create-student'>
+
           {currentStep === 1 && (
             <motion.div
-            initial={{ opacity:0 }}
-            animate={{ opacity:1 }}
-            transition={{ duration:0.8 }}
+              initial={{ opacity:0 }}
+              animate={{ opacity:1 }}
+              transition={{ duration:0.8 }}
             >
+              <h2 className='font-medium text-lg underline underline-offset-4'>Estudiante</h2>
+
               <section className='sections-create-student'>
                 <div>
-                  <p>Grado</p>
+                  <p>Grado *</p>
                   <select
                     value={ selectedGrade.id }
                     onChange={(e) => addToSelectedGrade(e.target.value, grades.map((grade) => grade.id === e.target.value && grade.nombre))}
@@ -315,8 +320,9 @@ function CreateStudent() {
                     ))}
                   </select>
                 </div>
+
                 <div>
-                  <p>Sección</p>
+                  <p>Sección *</p>
                   <select
                     value={ selectedSection.id }
                     onChange={(e) => {addToSelectedSection(e.target.value, sections.map((section) => section.id === e.target.value && section.nombre))}}
@@ -328,11 +334,25 @@ function CreateStudent() {
                     ))}
                   </select>
                 </div>
+
+                <div>
+                  <p>Sexo *</p>
+                  <select
+                    value={formData.sexo}
+                    name='sexo'
+                    onChange={handleChange}
+                    className='select-create-student'
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="M">M</option>
+                    <option value="F">F</option>
+                  </select>
+                </div>
               </section>
 
               <section className='sections-create-student'>
                 <div>
-                  <p>CI o CE</p>
+                  <p>C.I  o  C.E *</p>
                   <input 
                     type="number"
                     name='ce_ci'
@@ -344,64 +364,37 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Nombre Completo del Estudiante</p>
+                  <p>Apellidos y Nombres del Estudiante *</p>
                   <input
                     type="text"
                     name='nombre_completo_estudiante'
                     value={formData.nombre_completo_estudiante}
                     autoComplete='off'
-                    placeholder='Rosales Garcia...'
+                    placeholder='Garcia ... Angel ...'
                     className='full-input' 
                     onChange={handleChange}
                   />
                 </div>
                 <div className="small-gap">
                   <div className='alg-center'>
-                    <p>Día</p>
-                    <input
-                      type="number"
-                      min="1"
-                      max="2"
-                      name='d'
-                      value={formData.d}
-                      autoComplete='off'
-                      placeholder='23'
-                      className='super-small-input' 
+                    <p>Fecha de nacimiento *</p>
+                    <input 
+                      type="date"
+                      name='fecha_nacimiento'
+                      value={formData.fecha_nacimiento}
+                      className='medium-input'
                       onChange={handleChange}
                     />
                   </div>
+
                   <div className='alg-center'>
-                    <p>Mes</p>
-                    <input
-                      type="number"
-                      name='m'
-                      value={formData.m}
-                      autoComplete='off'
-                      placeholder='06'
-                      className='super-small-input' 
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className='alg-center'>
-                    <p>Año</p>
-                    <input
-                      type="number"
-                      name='a'
-                      value={formData.a}
-                      autoComplete='off'
-                      placeholder='2018'
-                      className='super-small-input' 
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className='alg-center'>
-                    <p>Edad</p>
+                    <p>Edad *</p>
                     <input
                       type="number"
                       name='edad'
                       value={formData.edad}
                       autoComplete='off'
-                      placeholder='08'
+                      disabled
                       className='super-small-input' 
                       onChange={handleChange}
                     />
@@ -442,6 +435,65 @@ function CreateStudent() {
                     className='medium-input' 
                     onChange={handleChange}
                   />
+                </div>
+
+                <div>
+                  <p>Parentesco</p>
+                  <select
+                    value={formData.parentesco}
+                    name='parentesco'
+                    onChange={handleChange}
+                    className='select-create-student'
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Madre">Madre</option>
+                    <option value="Padre">Padre</option>
+                    <option value="Abuelo">Abuelo</option>
+                    <option value="Abuela">Abuela</option>
+                    <option value="Tío">Tío</option>
+                    <option value="Tía">Tía</option>
+                    <option value="Hermano">Hermano</option>
+                    <option value="Hermana">Hermana</option>
+                    <option value="Primo">Primo</option>
+                    <option value="Prima">Prima</option>
+                  </select>
+                  {/* input 
+                    type="text"
+                    name='parentesco'
+                    value={formData.parentesco}
+                    autoComplete='off'
+                    placeholder='Madre...'
+                    className='small-input'
+                    onChange={handleChange}
+                  /> */}
+                </div>
+
+                <div>
+                  <div className='mx-6'>
+                    <p>Repitiente</p>
+
+                    <div className="!flex-row mt-2">
+                      <input
+                        type="radio"
+                        id="repitiente_si"
+                        name="repitiente"
+                        value="Si"
+                        checked={formData.repitiente === "Si"}
+                        onChange={handleChange}
+                      />
+                      <label htmlFor="repitiente_si">Sí</label>
+                      <input
+                        type="radio"
+                        id="repitiente_no"
+                        name="repitiente"
+                        value="No"
+                        checked={formData.repitiente === "No"}
+                        onChange={handleChange}
+                      />
+                      <label htmlFor="repitiente_no">No</label>
+                    </div>
+                  </div>
+
                 </div>
               </section>
 
@@ -495,111 +547,8 @@ function CreateStudent() {
                     <label htmlFor="informe_medico_no">No</label>
                   </div>
                 </div>
-
-                <div>
-                <div>
-                  <p>Vacunas</p>
-                  <div className="!flex-row !gap-8">
-                    {/* Primera Dosis */}
-                    <div>
-                      <p>Dosis - 1:</p>
-                      <div className="!flex-row">
-                        <input
-                          type="radio"
-                          id="primera_si"
-                          name="primera_dosis"
-                          value="Si"
-                          checked={formData.primera_dosis === "Si"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="primera_si">Sí</label>
-                        <input
-                          type="radio"
-                          id="primera_no"
-                          name="primera_dosis"
-                          value="No"
-                          checked={formData.primera_dosis === "No"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="primera_no">No</label>
-                      </div>
-                    </div>
-
-                    {/* Segunda Dosis */}
-                    <div>
-                      <p>Dosis - 2:</p>
-                      <div className="!flex-row">
-                        <input
-                          type="radio"
-                          id="segunda_si"
-                          name="segunda_dosis"
-                          value="Si"
-                          checked={formData.segunda_dosis === "Si"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="segunda_si">Sí</label>
-                        <input
-                          type="radio"
-                          id="segunda_no"
-                          name="segunda_dosis"
-                          value="No"
-                          checked={formData.segunda_dosis === "No"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="segunda_no">No</label>
-                      </div>
-                    </div>
-
-                    {/* Tercera Dosis */}
-                    <div>
-                      <p>Dosis - 3:</p>
-                      <div className="!flex-row">
-                        <input
-                          type="radio"
-                          id="tercera_si"
-                          name="tercera_dosis"
-                          value="Si"
-                          checked={formData.tercera_dosis === "Si"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="tercera_si">Sí</label>
-                        <input
-                          type="radio"
-                          id="tercera_no"
-                          name="tercera_dosis"
-                          value="No"
-                          checked={formData.tercera_dosis === "No"}
-                          onChange={handleChange}
-                        />
-                        <label htmlFor="tercera_no">No</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                </div>
               </section>
 
-              <div className="container-steps-create-student">
-                <div className="process-create-student-state-line">
-                  <div className="left-line bg-2-process"></div>
-                  <div className="ball-line bg-2-process"></div>
-                  <div className="right-line bg-1-process"></div>
-                  <div className="ball-line bg-1-process"></div>
-                </div>
-
-                <button onClick={nextStep} className='next-btn-create-student'>Siguente</button>
-              </div>
-
-            </motion.div>
-          )}
-
-          {currentStep === 2 && (
-            <motion.div 
-            initial={{ opacity:0 }}
-            animate={{ opacity:1 }}
-            transition={{ duration:0.8 }}
-            >
               <h3>Tallas del Estudiante</h3>
               <section className='sections-create-student'>
                 <div className="small-gap">
@@ -666,7 +615,7 @@ function CreateStudent() {
                 </div>
               </section>
 
-              <h3>Observación <span className='font-light text-black/50'>(Opcional)</span></h3>
+              <h3>Observación</h3>
               <section className='sections-create-student'>
                 <input 
                     type="text"
@@ -678,10 +627,32 @@ function CreateStudent() {
                     onChange={handleChange}
                   />
               </section>
-              <h3>Representante</h3>
+
+              <div className="container-steps-create-student">
+                <div className="process-create-student-state-line">
+                  <div className="left-line bg-2-process"></div>
+                  <div className="ball-line bg-2-process"></div>
+                  <div className="right-line bg-1-process"></div>
+                  <div className="ball-line bg-1-process"></div>
+                </div>
+
+                <button onClick={nextStep} className='next-btn-create-student'>Siguente</button>
+              </div>
+
+            </motion.div>
+          )}
+
+          {currentStep === 2 && (
+            <motion.div 
+            initial={{ opacity:0 }}
+            animate={{ opacity:1 }}
+            transition={{ duration:0.8 }}
+            >
+              <h2 className='font-medium text-lg underline underline-offset-4'>Representante</h2>
+
               <section className='sections-create-student'>
                 <div>
-                  <p>Nombre Completo del Representante</p>
+                  <p>Nombre Completo del Representante *</p>
                   <input 
                     type="text"
                     name='nombre_completo_representante'
@@ -693,7 +664,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Cédula de Identidad</p>
+                  <p>Cédula de Identidad *</p>
                   <input 
                     type="number"
                     name='ci_representante'
@@ -704,20 +675,9 @@ function CreateStudent() {
                     onChange={handleChange}
                   />
                 </div>
+
                 <div>
-                  <p>Parentesco</p>
-                  <input 
-                    type="text"
-                    name='parentesco'
-                    value={formData.parentesco}
-                    autoComplete='off'
-                    placeholder='Madre...'
-                    className='small-input'
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <p>Teléfono</p>
+                  <p>Teléfono *</p>
                   <input 
                     type="text"
                     name='telefono'
@@ -753,7 +713,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Correo <span className='font-light text-black/50'>(Opcional)</span></p>
+                  <p>Correo</p>
                   <input 
                     type="text"
                     name='correo'
@@ -766,13 +726,42 @@ function CreateStudent() {
                 </div>
                 <div>
                   <p>Religión</p>
-                  <input 
+                  <select
+                    value={formData.religion}
+                    name='religion'
+                    onChange={handleChange}
+                    className='select-create-student'
+                  >
+                    <option value="">Seleccionar</option>
+                    <option value="Cristiano">Cristiano</option>
+                    <option value="Católico">Católico</option>
+                    <option value="Evangélico">Evangélico</option>
+                    <option value="Budista">Budista</option>
+                    <option value="Islamista">Islamista</option>
+                    <option value="No creyente">No creyente</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+
+                  {/* <input 
                     type="text"
                     name='religion'
                     value={formData.religion}
                     autoComplete='off'
                     placeholder='Cristiano...'
                     className='small-input'
+                    onChange={handleChange}
+                  /> */}
+                </div>
+
+                <div>
+                  <p>Numero de Cuenta</p>
+                  <input 
+                    type="text"
+                    name='cuenta_banco'
+                    value={formData.cuenta_banco}
+                    autoComplete='off'
+                    placeholder='0102...'
+                    className='full-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -807,7 +796,7 @@ function CreateStudent() {
               
               <section className='sections-create-student'>
                 <div>
-                  <p>Comités de la 058 <span className='font-light text-black/50'>(Opcional)</span></p>
+                  <p>Comités de la 058</p>
                   <input 
                     type="text"
                     name='comites_058'
@@ -819,7 +808,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Movimiento Bolivariano de Familia <span className='font-light text-black/50'>(Opcional)</span></p>
+                  <p>Movimiento Bolivariano de Familia</p>
                   <div className='!flex-row mt-2'>
                     <div className='!flex-row'>
                       <input
@@ -875,6 +864,7 @@ function CreateStudent() {
               <button onClick={() => {resetFormData(); setCurrentStep(1);}}>Finalizar</button>
             </motion.div>
           )}
+
         </form>
       </motion.div>
     

@@ -5,14 +5,11 @@ const FormDataContext = createContext();
 const initialFormData = {
   ce_ci: '',
   nombre_completo_estudiante: '',
-  d: '',
-  m: '',
-  a: '',
+  fecha_nacimiento: '',
   edad: '',
   lugar_de_nacimiento: '',
   nombre_completo_representante: '',
   ci_representante: '',
-  parentesco: '',
   direccion: '',
   telefono: '',
   ocupacion: '',
@@ -23,7 +20,6 @@ const initialFormData = {
   z: '',
   alergico: '',
   medicamento: '',
-  religion: '',
   informe_medico: '',
   con_quien_vive: '',
   quien_lo_retira: '',
@@ -31,13 +27,15 @@ const initialFormData = {
   serial_patria: '',
   correo: '',
   observacion: '',
-  primera_dosis: '',
-  segunda_dosis: '',
-  tercera_dosis: '',
   comites_058: '',
   movimiento_de_familia: '',
+  repitiente: '',
+  cuenta_banco: '',
+  sexo: '',
+  parentesco: '',
+  religion: '',
   seccion_id: '',
-  grado_id: '',
+  grado_id: ''
 };
 
 const initialGradeSelected = {id: '', nombre: '',};

@@ -1,47 +1,37 @@
-import SectionChild from './SectionChild'
+import { obj } from "../Data/estudiantes_obj";
 
 const StudentTemplate = ({ student, grades, sections }) => {
 
-  const handleGradeSection = (elements, item) => {
-    return elements.filter(element => element.id === item).map(element => element.nombre).join(', ');
+  const handle = (value, option) => {
+    let newObj;
+
+    if (option === 1) {
+      newObj = grades.find((item) => item.id === value)
+    } else if (option === 2) {
+      newObj = sections.find((item) => item.id === value)
+    }
+
+    return newObj.nombre;
   }
 
   return (
     <div>
-      <section className='w-auto h-auto flex flex-wrap gap-8 mt-8'>
-        <SectionChild label='Grado' value={handleGradeSection(grades, student.grado_id)}/>
-        <SectionChild label='Sección' value={handleGradeSection(sections, student.seccion_id)}/>
-        <SectionChild label='CI o CE del Estudiante' value={student.ce_ci}/>
-        <SectionChild label='Nombre Completo del Estudiante' value={student.nombre_completo_estudiante}/>
-        <SectionChild label='Día' value={student.d}/>
-        <SectionChild label='Mes' value={student.m}/>
-        <SectionChild label='Año' value={student.a}/>
-        <SectionChild label='Edad' value={student.edad}/>
-        <SectionChild label='Lugar de nacimiento' value={student.lugar_de_nacimiento}/>
-        <SectionChild label='Con quién vive' value={student.con_quien_vive}/>
-        <SectionChild label='Quién  lo retira' value={student.quien_lo_retira}/>
-        <SectionChild label='Alérgico' value={student.alergico}/>
-        <SectionChild label='Medicamento' value={student.medicamento}/>
-        <SectionChild label='Informe Médico' value={student.informe_medico}/>
-        <SectionChild label='Vacunas' value={`Dosis - 1: ${student.primera_dosis}.  Dosis - 2: ${student.segunda_dosis}.  Dosis - 3: ${student.tercera_dosis}.`}/>
-        <SectionChild label='Peso (kg)' value={student.p_kg}/>
-        <SectionChild label='Talla Cuello' value={student.tc}/>
-        <SectionChild label='Pantalón' value={student.p}/>
-        <SectionChild label='Camisa' value={student.c}/>
-        <SectionChild label='Zapato' value={student.z}/>
-        <SectionChild label='Observación' value={student.observacion}/>
-        <SectionChild label='Nombre Completo del Representante' value={student.nombre_completo_representante}/>
-        <SectionChild label='Cédula del Representante' value={student.ci_representante}/>
-        <SectionChild label='Parentesco' value={student.parentesco}/>
-        <SectionChild label='Teléfono' value={student.telefono}/>
-        <SectionChild label='Dirección' value={student.direccion}/>
-        <SectionChild label='Ocupación' value={student.ocupacion}/>
-        <SectionChild label='Correo' value={student.correo}/>
-        <SectionChild label='Religión' value={student.religion}/>
-        <SectionChild label='Código' value={student.codigo_patria}/>
-        <SectionChild label='Serial' value={student.serial_patria}/>
-        <SectionChild label='Comités de la 058' value={student.comites_058}/>
-        <SectionChild label='Movimiento Bolivariano de Familia' value={student.movimiento_de_familia}/>
+      <section className='w-auto h-auto flex flex-wrap gap-8 my-8'>
+        {console.log(student)}
+        {console.log(grades)}
+        {console.log(sections)}
+
+
+        {obj.map((item, index) => (
+          <div key={`${item.name}-${index}`} className='flex flex-col gap-3'>
+            <span>{item.name}</span>
+            <div
+              className='w-auto h-9 px-4 flex items-center border border-black/15 rounded-md bg-teal-100 text-gray-600'
+            >
+              {item.value === 'grado_id' ? handle(student[item.value], 1) : item.value === 'seccion_id' ? handle(student[item.value], 2) : student[item.value]}
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   )

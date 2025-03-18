@@ -193,6 +193,7 @@ function ModifyStudent() {
       <button className='load-more-mod-std' onClick={loadMore}>Cargar Mas</button>
       
       <div className="min-w-[1px] min-h-10"></div>
+      
       <DialogScreen 
         isOpen={isDialogOpen} 
         onClose={closeDialog} 

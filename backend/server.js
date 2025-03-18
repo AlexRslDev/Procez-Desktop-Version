@@ -6,12 +6,14 @@ const puppeteer = require('puppeteer');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+require('dotenv').config();
 let server;
 
 const app = express();
 
 const db = new sqlite3.Database('./db/general_database.db');
 const DB_PATH = './db/general_database.db';
+const HOME_DATA_DB = process.env.HOME_DB_NAME;
 
 app.use(cors());
 app.use(express.json());
@@ -124,25 +126,16 @@ app.get('/api/students_by_sections', (req, res) => {
 // Ruta para guardar estudiantes
 app.post('/api/students', (req, res) => {
   const { 
-    ce_ci, nombre_completo_estudiante, d, m, a, edad, lugar_de_nacimiento, 
-    nombre_completo_representante, ci_representante, parentesco, direccion, 
-    telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, 
-    religion, informe_medico, con_quien_vive, quien_lo_retira, 
-    codigo_patria, serial_patria, correo, observacion, 
-    primera_dosis, segunda_dosis, tercera_dosis, comites_058, movimiento_de_familia, seccion_id, grado_id,
+    ce_ci, nombre_completo_estudiante, fecha_nacimiento, edad, lugar_de_nacimiento, nombre_completo_representante, ci_representante, direccion, telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, informe_medico, con_quien_vive, quien_lo_retira, codigo_patria, serial_patria, correo, observacion, comites_058, movimiento_de_familia, repitiente, cuenta_banco, sexo, parentesco, religion, seccion_id, grado_id
   } = req.body;
 
-  db.run('INSERT INTO estudiantes (ce_ci, nombre_completo_estudiante, d, m, a, edad, lugar_de_nacimiento, nombre_completo_representante, ci_representante, parentesco, direccion, telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, religion, informe_medico, con_quien_vive, quien_lo_retira, codigo_patria, serial_patria, correo, observacion, primera_dosis, segunda_dosis, tercera_dosis, comites_058, movimiento_de_familia, seccion_id, grado_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-    [ce_ci, nombre_completo_estudiante, d, m, a, edad, lugar_de_nacimiento, 
-    nombre_completo_representante, ci_representante, parentesco, direccion, 
-    telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, 
-    religion, informe_medico, con_quien_vive, quien_lo_retira, 
-    codigo_patria, serial_patria, correo, observacion, 
-    primera_dosis, segunda_dosis, tercera_dosis, comites_058, movimiento_de_familia, seccion_id, grado_id],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID });
-    });
+  console.log(req.body)
+
+  db.run('INSERT INTO estudiantes (ce_ci, nombre_completo_estudiante, fecha_nacimiento, edad, lugar_de_nacimiento, nombre_completo_representante, ci_representante, direccion, telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, informe_medico, con_quien_vive, quien_lo_retira, codigo_patria, serial_patria, correo, observacion, comites_058, movimiento_de_familia, repitiente, cuenta_banco, sexo, parentesco, religion, seccion_id, grado_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [ce_ci, nombre_completo_estudiante, fecha_nacimiento, edad, lugar_de_nacimiento, nombre_completo_representante, ci_representante, direccion, telefono, ocupacion, p_kg, tc, p, c, z, alergico, medicamento, informe_medico, con_quien_vive, quien_lo_retira, codigo_patria, serial_patria, correo, observacion, comites_058, movimiento_de_familia, repitiente, cuenta_banco, sexo, parentesco, religion, seccion_id, grado_id], function (err) {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ id: this.lastID });
+  });
+  
 });
 
 // Ruta para obtener todas las ce_ci's
@@ -439,36 +432,68 @@ app.post('/api/import-db', upload.single('general_database'), (req, res) => {
 
 // Ruta para pedir la cantidad de alumnos enfermos
 app.get('/api/alumnos-enfermos', (req, res) => {
-  db.get('SELECT COUNT(*) AS count FROM estudiantes WHERE LOWER(medicamento) != "no"', [], (err, row) => {
+  db.get('SELECT COUNT(*) AS count FROM estudiantes WHERE LOWER(medicamento) != "no" AND LOWER(medicamento) != ""', [], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ count: row.count });
   });
 });
 
-// Ruta para obtener datos de others
-app.get('/api/others', (req, res) => {
-  db.all('SELECT * FROM others', [], (err, rows) => {
+// Ruta para pedir la cantidad de alumnos por sexo
+app.get('/api/sexo', (req, res) => {
+  db.get('SELECT COUNT(*) AS Masculino FROM estudiantes WHERE LOWER(sexo) = "m"', [], (errM, rowM) => {
+    if (errM) {
+      return res.status(500).json({ error: errM.message });
+    }
+
+    db.get('SELECT COUNT(*) AS Femenino FROM estudiantes WHERE LOWER(sexo) = "f"', [], (errF, rowF) => {
+      if (errF) {
+        return res.status(500).json({ error: errF.message });
+      }
+
+      const result = {
+        Masculino: rowM?.Masculino?.toString() || "0",
+        Femenino: rowF?.Femenino?.toString() || "0",
+      };
+
+      res.json(result);
+    });
+  });
+});
+
+
+
+// Ruta para obtener datos de home_data
+app.get('/api/home-data', (req, res) => {
+  db.all(`SELECT * FROM ${HOME_DATA_DB}`, [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
 });
 
-// Ruta para cambiar datos de others
-// ID: 1 = valor de sabana; ID: 2 = valor ultimo registro de estudiante.
-// VALOR - ID.
+// Ruta para cambiar datos de home_data
+/* 
+
+ID: 1 = cantidad de sabanas generadas
+ID: 2 = valor ultimo registro de estudiante 
+Ejemplo de request: 
+/api/intercambiar
+Method: POST
+{
+  valor: "12",
+  id: "1"
+}
+
+*/
 app.post('/api/intercambiar', (req, res) => {
-  const { valor, id } = req.body; // Recibimos el valor y el ID de la solicitud
-  console.log(valor, id);
-  // Validamos que ambos datos estén presentes
+  const { valor, id } = req.body;
+
   if (!valor || !id) {
     return res.status(400).json({ error: 'Se requieren "valor" e "id"' });
   }
 
-  // Actualizamos el valor en la tabla para el ID proporcionado
-  db.run('UPDATE others SET value = ? WHERE id = ?', [valor, id], (err) => {
+  db.run(`UPDATE ${HOME_DATA_DB} SET value = ? WHERE id = ?`, [valor, id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
 
-    // Retornamos un estado exitoso sin información adicional
     res.status(200).end();
   });
 });

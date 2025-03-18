@@ -39,6 +39,7 @@ input:focus {
 .full-input, .medium-input, .small-input, .super-small-input {
   height: 40px;
   padding-left: 8px;
+  padding-right: 8px;
   border: .2px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
 }
