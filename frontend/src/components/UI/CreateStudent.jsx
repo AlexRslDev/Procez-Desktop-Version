@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import axios from 'axios';
 import { useFormData } from '../FormDataContex';
+import { obj } from '../../Data/estudiantes_obj';
 import '../../styles/CreateStudent.css';
 
 function CreateStudent() {
@@ -134,24 +135,24 @@ function CreateStudent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Lista de campos obligatorios
+    const requiredFields = [
+      "ce_ci",
+      "nombre_completo_estudiante",
+      "fecha_nacimiento",
+      "edad",
+      "sexo",
+      "nombre_completo_representante",
+      "ci_representante",
+      "telefono",
+      "seccion_id",
+      "grado_id"
+    ];
 
     if (isNew) {
-      // Lista de campos obligatorios
-      const requiredFields = [
-        "ce_ci",
-        "nombre_completo_estudiante",
-        "fecha_nacimiento",
-        "edad",
-        "sexo",
-        "nombre_completo_representante",
-        "ci_representante",
-        "telefono",
-        "seccion_id",
-        "grado_id"
-      ];
 
       // Crea un nuevo objeto con seccion_id agregado
-
       const finalFormData = {
         ...formData,
         seccion_id: selectedSection.id,
@@ -172,11 +173,18 @@ function CreateStudent() {
 
       // Mostrar mensaje de error si hay campos obligatorios vacíos
       if (emptyFields.length > 0) {
-        setMissingFields('Faltan campos obligatorios por rellenar');
+        let mmissingFields = [];
+
+        emptyFields.map((item) => {
+          const found = obj.find(item2 => item2.value === item);
+          found && mmissingFields.push(found.name);
+        });
+
+        setMissingFields(`Faltan los siguientes campos obligatorios: ${mmissingFields.join(', ')}`);
         return;
       }
 
-      console.log('Formulario enviado:', finalFormData);
+      //console.log('Formulario enviado:', finalFormData);
 
       // Hacer el POST al backend
       try {
@@ -211,7 +219,26 @@ function CreateStudent() {
         seccion_id: selectedSection.id,
         grado_id: selectedGrade.id,
       };
-      console.log(finalFormData)
+      
+      // Verificar que los campos obligatorios estén llenos
+      const emptyFields = requiredFields.filter((field) => {
+        const value = finalFormData[field];
+        return typeof value === "string" && value.trim() === "";
+      });
+
+      // Mostrar mensaje de error si hay campos obligatorios vacíos
+      if (emptyFields.length > 0) {
+        let mmissingFields = [];
+
+        emptyFields.map((item) => {
+          const found = obj.find(item2 => item2.value === item);
+          found && mmissingFields.push(found.name);
+        });
+
+        setMissingFields(`Faltan los siguientes campos obligatorios: ${mmissingFields.join(', ')}`);
+        return;
+      }
+
       try {
         const response = await fetch(`http://localhost:5000/api/student_modify/${finalFormData.id}`, {
           method: 'PUT',
@@ -308,7 +335,7 @@ function CreateStudent() {
 
               <section className='sections-create-student'>
                 <div>
-                  <p>Grado *</p>
+                  <p>Grado <span className='text-red-600'>*</span></p>
                   <select
                     value={ selectedGrade.id }
                     onChange={(e) => addToSelectedGrade(e.target.value, grades.map((grade) => grade.id === e.target.value && grade.nombre))}
@@ -322,7 +349,7 @@ function CreateStudent() {
                 </div>
 
                 <div>
-                  <p>Sección *</p>
+                  <p>Sección <span className='text-red-600'>*</span></p>
                   <select
                     value={ selectedSection.id }
                     onChange={(e) => {addToSelectedSection(e.target.value, sections.map((section) => section.id === e.target.value && section.nombre))}}
@@ -336,7 +363,7 @@ function CreateStudent() {
                 </div>
 
                 <div>
-                  <p>Sexo *</p>
+                  <p>Sexo <span className='text-red-600'>*</span></p>
                   <select
                     value={formData.sexo}
                     name='sexo'
@@ -352,7 +379,7 @@ function CreateStudent() {
 
               <section className='sections-create-student'>
                 <div>
-                  <p>C.I  o  C.E *</p>
+                  <p>C.I  o  C.E <span className='text-red-600'>*</span></p>
                   <input 
                     type="number"
                     name='ce_ci'
@@ -364,7 +391,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Apellidos y Nombres del Estudiante *</p>
+                  <p>Apellidos y Nombres del Estudiante <span className='text-red-600'>*</span></p>
                   <input
                     type="text"
                     name='nombre_completo_estudiante'
@@ -377,24 +404,25 @@ function CreateStudent() {
                 </div>
                 <div className="small-gap">
                   <div className='alg-center'>
-                    <p>Fecha de nacimiento *</p>
+                    <p>Fecha de nacimiento <span className='text-red-600'>*</span></p>
                     <input 
                       type="date"
                       name='fecha_nacimiento'
                       value={formData.fecha_nacimiento}
+                      min={`${new Date().getFullYear() - 5}-1-1`}
+                      max={`${new Date().getFullYear() - 5}-12-31`}
                       className='medium-input'
                       onChange={handleChange}
                     />
                   </div>
 
                   <div className='alg-center'>
-                    <p>Edad *</p>
+                    <p>Edad <span className='text-red-600'>*</span></p>
                     <input
                       type="number"
                       name='edad'
                       value={formData.edad}
                       autoComplete='off'
-                      disabled
                       className='super-small-input' 
                       onChange={handleChange}
                     />
@@ -652,7 +680,7 @@ function CreateStudent() {
 
               <section className='sections-create-student'>
                 <div>
-                  <p>Nombre Completo del Representante *</p>
+                  <p>Apellidos y Nombres del Representante <span className='text-red-600'>*</span></p>
                   <input 
                     type="text"
                     name='nombre_completo_representante'
@@ -664,7 +692,7 @@ function CreateStudent() {
                   />
                 </div>
                 <div>
-                  <p>Cédula de Identidad *</p>
+                  <p>Cédula de Identidad <span className='text-red-600'>*</span></p>
                   <input 
                     type="number"
                     name='ci_representante'
@@ -677,16 +705,33 @@ function CreateStudent() {
                 </div>
 
                 <div>
-                  <p>Teléfono *</p>
-                  <input 
-                    type="text"
-                    name='telefono'
-                    value={formData.telefono}
-                    autoComplete='off'
-                    placeholder='0424...'
-                    className='medium-input'
-                    onChange={handleChange}
-                  />
+                  <p>Teléfono <span className='text-red-600'>*</span></p>
+                  
+                  <div className='!flex-row'>
+                    <select
+                      value={formData.telefono}
+                      name='telefono'
+                      onChange={handleChange}
+                      className='select-create-student'
+                    >
+                      <option value="">...</option>
+                      <option value="0424-">0424</option>
+                      <option value="0414-">0414</option>
+                      <option value="0416-">0416</option>
+                      <option value="0426-">0426</option>
+                      <option value="0412-">0412</option>
+                      <option value="0271-">0271</option>
+                    </select>
+                    <input 
+                      type="text"
+                      name='telefono'
+                      value={formData.telefono}
+                      autoComplete='off'
+                      placeholder='0424...'
+                      className='medium-input'
+                      onChange={handleChange}
+                    />
+                  </div>
                 </div>
                 <div>
                   <p>Dirección</p>
@@ -741,16 +786,6 @@ function CreateStudent() {
                     <option value="No creyente">No creyente</option>
                     <option value="Otro">Otro</option>
                   </select>
-
-                  {/* <input 
-                    type="text"
-                    name='religion'
-                    value={formData.religion}
-                    autoComplete='off'
-                    placeholder='Cristiano...'
-                    className='small-input'
-                    onChange={handleChange}
-                  /> */}
                 </div>
 
                 <div>
@@ -836,8 +871,8 @@ function CreateStudent() {
                 </div>
               </section>
 
-              {missingFields && <p style={{ color: 'red', marginTop: '16px' }}>{missingFields}</p>}
-              {studentExist && <p style={{ color: 'red', marginTop: '16px' }}>{studentExist}</p>}
+              {missingFields && <p style={{ color: 'red', marginTop: '36px' }}>{missingFields}</p>}
+              {studentExist && <p style={{ color: 'red', marginTop: '36px' }}>{studentExist}</p>}
 
               <div className="container-steps-create-student">
                 <button onClick={prevStep} className='back-btn-create-student'>Atras</button>

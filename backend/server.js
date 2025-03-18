@@ -218,7 +218,7 @@ app.delete('/api/students_delete/:ce_ci', (req, res) => {
 
 // Ruta para generar sabana por seccion  --> http://localhost:5000/api/generate-pdf/[number]
 app.get('/api/generate-pdf/:seccion_id/:grade_name/:section_name', async (req, res) => {
-  const { seccion_id, grade_name, section_name } = req.params; // Get seccion_id from URL parameters
+  const { seccion_id, grade_name, section_name } = req.params;
 
   // Query data from the database filtered by seccion_id
   db.all('SELECT * FROM estudiantes WHERE seccion_id = ? ORDER BY SUBSTR(nombre_completo_estudiante, 1, 1) ASC', [seccion_id], async (err, rows) => {
@@ -267,40 +267,37 @@ const generateHtmlTemplate = (rows, grade, section) => {
   // Mapping de los campos de la base de datos a los nombres para mostrar
   const headerMapping = {
     'numero': 'Nº',
-    'ce_ci': 'CE o CI',
-    'nombre_completo_estudiante': 'Nombre Completo Estudiante',
-    'd': 'Día',
-    'm': 'Mes',
-    'a': 'Año',
+    'ce_ci': 'C.E o C.I',
+    'nombre_completo_estudiante': 'Apellidos y Nombres del Estudiante',
+    'fecha_nacimiento': 'Fecha de nacimiento',
     'edad': 'Edad',
+    'sexo': 'Sexo',
     'lugar_de_nacimiento': 'Lugar de Nacimiento',
-    'nombre_completo_representante': 'Nombre Completo Representante',
-    'ci_representante': 'C.I. Representante',
+    'alergico': 'Alérgico',
+    'medicamento': 'Medicamento',
+    'informe_medico': 'Informe Médico',
+    'con_quien_vive': 'Con Quién Vive',
+    'quien_lo_retira': 'Quién lo Retira',
     'parentesco': 'Parentesco',
-    'direccion': 'Dirección',
-    'telefono': 'Teléfono',
-    'ocupacion': 'Ocupación',
     'p_kg': 'P.Kg',
     'tc': 'Tc',
     'p': 'P',
     'c': 'C',
     'z': 'Z',
-    'alergico': 'Alérgico',
-    'medicamento': 'Medicamento',
-    'religion': 'Religión',
-    'informe_medico': 'Informe Médico',
-    'con_quien_vive': 'Con Quién Vive',
-    'quien_lo_retira': 'Quién lo Retira',
+    'repitiente': 'Repitiente',
+    'observacion': 'Observación',
+    'nombre_completo_representante': 'Apellidos y Nombres del Representante',
+    'ci_representante': 'C.I Representante',
+    'direccion': 'Dirección',
+    'telefono': 'Teléfono',
+    'correo': 'Correo',
+    'ocupacion': 'Ocupación',
     'codigo_patria': 'Código Patria',
     'serial_patria': 'Serial Patria',
-    'correo': 'Correo',
-    'observacion': 'Observación',
-    'primera_dosis': 'Primera Dosis',
-    'segunda_dosis': 'Segunda Dosis',
-    'tercera_dosis': 'Tercera Dosis',
+    'cuenta_banco': 'Cuenta Bancaria',
     'comites_058': 'Comités de la 058',
     'movimiento_de_familia': 'Movimiento de Familia',
-    'firma': 'Firma'
+    'religion': 'Religión'
   };
 
   // Calcular el ancho de las columnas dinámicamente (esto es opcional si quieres que sea proporcional)
@@ -364,11 +361,17 @@ const generateHtmlTemplate = (rows, grade, section) => {
         <div style="display: flex; gap: 50px; margin-left: 30px">
           <div class="ctn">
             <p style="width: auto; height: 40px" position: absolute; bottom: 0;>Grado:</p>
-            <div style="width: 200px; height: 40px; border: none; border-bottom-width: 1px; margin-left: 8px; border-bottom-style: solid; border-bottom-color: #d4d4d4;"><p style="padding-bottom: -10px; margin-left: 8px;">${grade}</p></div>
+            <div style="width: 200px; height: 40px; border: none; border-bottom-width: 1px; margin-left: 8px; border-bottom-style: solid; border-bottom-color: #d4d4d4;"><p style="padding-bottom: -10px; margin-left: 8px; color: #646464;">${grade}</p></div>
           </div>
+          
           <div class="ctn">
-            <p style="width: auto; height: 40px" position: absolute; bottom: 0;>Seccion:</p>
-            <div style="width: 200px; height: 40px; border: none; border-bottom-width: 1px; margin-left: 8px; border-bottom-style: solid; border-bottom-color: #d4d4d4;"><p style="padding-bottom: -10px; margin-left: 8px;">${section}</p></div>
+            <p style="width: auto; height: 40px" position: absolute; bottom: 0;>Sección:</p>
+            <div style="width: 200px; height: 40px; border: none; border-bottom-width: 1px; margin-left: 8px; border-bottom-style: solid; border-bottom-color: #d4d4d4;"><p style="padding-bottom: -10px; margin-left: 8px; color: #646464;">${section}</p></div>
+          </div>
+          
+          <div class="ctn">
+            <p style="width: auto; height: 40px" position: absolute; bottom: 0;>Periodo Escolar:</p>
+            <div style="width: 200px; height: 40px; border: none; border-bottom-width: 1px; margin-left: 8px; border-bottom-style: solid; border-bottom-color: #d4d4d4;"><p style="padding-bottom: -10px; margin-left: 8px; color: #646464;">${`${new Date().getFullYear()} - ${new Date().getFullYear() + 1}`}</p></div>
           </div>
         </div>
         <table>
