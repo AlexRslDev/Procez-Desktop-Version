@@ -25,7 +25,7 @@ function GenerateSheet() {
     };
 
     const fetchOthers = async () => {
-      const response = await axios.get('http://localhost:5000/api/others');
+      const response = await axios.get('http://localhost:5000/api/home-data');
       setHomeValues(response.data);
     }
 
@@ -52,7 +52,7 @@ function GenerateSheet() {
     try {
       // Set the spinner to true to show loading
       setIsSpinner(true);
-      
+
       // Fetch the PDF from the backend (using GET)
       const response = await fetch(`http://localhost:5000/api/generate-pdf/${section_id}/${grade}/${section}`, {
         method: 'GET',
@@ -98,7 +98,7 @@ function GenerateSheet() {
         valor: valor,
         id: id
       });
-  
+
       console.log('Valor actualizado correctamente', response.status);
     } catch (error) {
       if (error.response) {
@@ -112,7 +112,7 @@ function GenerateSheet() {
   }
 
   return (
-    <motion.div 
+    <motion.div
     initial={{ opacity:0 }}
     animate={{ opacity:1 }}
     transition={{ duration:0.8 }}

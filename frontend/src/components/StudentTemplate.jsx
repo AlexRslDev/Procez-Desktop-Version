@@ -17,11 +17,6 @@ const StudentTemplate = ({ student, grades, sections }) => {
   return (
     <div>
       <section className='w-auto h-auto flex flex-wrap gap-8 my-8'>
-        {console.log(student)}
-        {console.log(grades)}
-        {console.log(sections)}
-
-
         {obj.map((item, index) => (
           <div key={`${item.name}-${index}`} className='flex flex-col gap-3'>
             <span>{item.name}</span>

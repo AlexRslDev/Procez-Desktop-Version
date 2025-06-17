@@ -78,12 +78,12 @@ function CreateStudent() {
         }));
         return;
       }
-  
+
       // Validar longitud
       if (value.length >= maxLength) {
         return;
       }
-  
+
       setFormData(prev => ({
         ...prev,
         [name]: value,
@@ -122,7 +122,7 @@ function CreateStudent() {
           [name]: value,
         }));
         break;
-    }  
+    }
   };
 
   const nextStep = () => {
@@ -135,7 +135,7 @@ function CreateStudent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Lista de campos obligatorios
     const requiredFields = [
       "ce_ci",
@@ -145,7 +145,6 @@ function CreateStudent() {
       "sexo",
       "nombre_completo_representante",
       "ci_representante",
-      "telefono",
       "seccion_id",
       "grado_id"
     ];
@@ -212,14 +211,14 @@ function CreateStudent() {
       } catch (error) {
         console.error('Error al enviar el formulario:', error);
         alert('Hubo un error al enviar el formulario. Intenta nuevamente.');
-      }  
+      }
     } else {
       const finalFormData = {
         ...formData,
         seccion_id: selectedSection.id,
         grado_id: selectedGrade.id,
       };
-      
+
       // Verificar que los campos obligatorios estén llenos
       const emptyFields = requiredFields.filter((field) => {
         const value = finalFormData[field];
@@ -247,7 +246,7 @@ function CreateStudent() {
           },
           body: JSON.stringify(finalFormData), // Send the entire formData object
         });
-    
+
         if (response.ok) {
           const data = await response.json();
           //alert(data.message);
@@ -259,7 +258,7 @@ function CreateStudent() {
       } catch (error) {
         console.error('Error to send modify student data:', error);
       }
-    } 
+    }
   };
 
   async function handleChangeHome(valor, id) {
@@ -268,7 +267,7 @@ function CreateStudent() {
         valor: valor,
         id: id
       });
-  
+
       console.log('Valor actualizado correctamente', response.status);
     } catch (error) {
       if (error.response) {
@@ -301,14 +300,14 @@ function CreateStudent() {
   function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
     const nacimiento = new Date(fechaNacimiento);
-  
+
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const mes = hoy.getMonth() - nacimiento.getMonth();
-  
+
     if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
       edad--;
     }
-    
+
     if (edad < 10) {
       edad = '0' + edad;
     }
@@ -317,7 +316,7 @@ function CreateStudent() {
   }
 
   return (
-      <motion.div 
+      <motion.div
       initial={{ opacity:0 }}
       animate={{ opacity:1 }}
       transition={{ duration:0.8 }}
@@ -380,8 +379,8 @@ function CreateStudent() {
               <section className='sections-create-student'>
                 <div>
                   <p>C.I  o  C.E <span className='text-red-600'>*</span></p>
-                  <input 
-                    type="number"
+                  <input
+                    type="text"
                     name='ce_ci'
                     value={formData.ce_ci}
                     autoComplete='off'
@@ -398,14 +397,14 @@ function CreateStudent() {
                     value={formData.nombre_completo_estudiante}
                     autoComplete='off'
                     placeholder='Garcia ... Angel ...'
-                    className='full-input' 
+                    className='full-input'
                     onChange={handleChange}
                   />
                 </div>
                 <div className="small-gap">
                   <div className='alg-center'>
                     <p>Fecha de nacimiento <span className='text-red-600'>*</span></p>
-                    <input 
+                    <input
                       type="date"
                       name='fecha_nacimiento'
                       value={formData.fecha_nacimiento}
@@ -423,8 +422,9 @@ function CreateStudent() {
                       name='edad'
                       value={formData.edad}
                       autoComplete='off'
-                      className='super-small-input' 
+                      className='super-small-input'
                       onChange={handleChange}
+                      min="0"
                     />
                   </div>
                 </div>
@@ -436,7 +436,7 @@ function CreateStudent() {
                     value={formData.lugar_de_nacimiento}
                     autoComplete='off'
                     placeholder='Valera...'
-                    className='medium-input' 
+                    className='medium-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -448,7 +448,7 @@ function CreateStudent() {
                     value={formData.con_quien_vive}
                     autoComplete='off'
                     placeholder='Mama, abuela...'
-                    className='medium-input' 
+                    className='medium-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -460,7 +460,7 @@ function CreateStudent() {
                     value={formData.quien_lo_retira}
                     autoComplete='off'
                     placeholder='Tía, papá'
-                    className='medium-input' 
+                    className='medium-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -485,7 +485,7 @@ function CreateStudent() {
                     <option value="Primo">Primo</option>
                     <option value="Prima">Prima</option>
                   </select>
-                  {/* input 
+                  {/* input
                     type="text"
                     name='parentesco'
                     value={formData.parentesco}
@@ -535,7 +535,7 @@ function CreateStudent() {
                     value={formData.alergico}
                     autoComplete='off'
                     placeholder='Es alergico a...'
-                    className='medium-input' 
+                    className='medium-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -547,7 +547,7 @@ function CreateStudent() {
                     value={formData.medicamento}
                     autoComplete='off'
                     placeholder='Acetaminophen...'
-                    className='medium-input' 
+                    className='medium-input'
                     onChange={handleChange}
                   />
                 </div>
@@ -582,7 +582,7 @@ function CreateStudent() {
                 <div className="small-gap">
                   <div className='alg-center'>
                     <p>Peso (kg)</p>
-                    <input 
+                    <input
                       type="text"
                       name='p_kg'
                       value={formData.p_kg}
@@ -594,7 +594,7 @@ function CreateStudent() {
                   </div>
                   <div className='alg-center'>
                     <p>Talla Cuello</p>
-                    <input 
+                    <input
                       type="text"
                       name='tc'
                       value={formData.tc}
@@ -606,7 +606,7 @@ function CreateStudent() {
                   </div>
                   <div className='alg-center'>
                     <p>Pantalón</p>
-                    <input 
+                    <input
                       type="text"
                       name='p'
                       value={formData.p}
@@ -618,7 +618,7 @@ function CreateStudent() {
                   </div>
                   <div className='alg-center'>
                     <p>Camisa</p>
-                    <input 
+                    <input
                       type="text"
                       name='c'
                       value={formData.c}
@@ -630,7 +630,7 @@ function CreateStudent() {
                   </div>
                   <div className='alg-center'>
                     <p>Zapato</p>
-                    <input 
+                    <input
                       type="text"
                       name='z'
                       value={formData.z}
@@ -645,7 +645,7 @@ function CreateStudent() {
 
               <h3>Observación</h3>
               <section className='sections-create-student'>
-                <input 
+                <input
                     type="text"
                     name='observacion'
                     value={formData.observacion}
@@ -671,7 +671,7 @@ function CreateStudent() {
           )}
 
           {currentStep === 2 && (
-            <motion.div 
+            <motion.div
             initial={{ opacity:0 }}
             animate={{ opacity:1 }}
             transition={{ duration:0.8 }}
@@ -681,7 +681,7 @@ function CreateStudent() {
               <section className='sections-create-student'>
                 <div>
                   <p>Apellidos y Nombres del Representante <span className='text-red-600'>*</span></p>
-                  <input 
+                  <input
                     type="text"
                     name='nombre_completo_representante'
                     value={formData.nombre_completo_representante}
@@ -693,8 +693,8 @@ function CreateStudent() {
                 </div>
                 <div>
                   <p>Cédula de Identidad <span className='text-red-600'>*</span></p>
-                  <input 
-                    type="number"
+                  <input
+                    type="text"
                     name='ci_representante'
                     value={formData.ci_representante}
                     autoComplete='off'
@@ -705,8 +705,8 @@ function CreateStudent() {
                 </div>
 
                 <div>
-                  <p>Teléfono <span className='text-red-600'>*</span></p>
-                  
+                  <p>Teléfono</p>
+
                   <div className='!flex-row'>
                     <select
                       value={formData.telefono}
@@ -722,7 +722,7 @@ function CreateStudent() {
                       <option value="0412-">0412</option>
                       <option value="0271-">0271</option>
                     </select>
-                    <input 
+                    <input
                       type="text"
                       name='telefono'
                       value={formData.telefono}
@@ -735,7 +735,7 @@ function CreateStudent() {
                 </div>
                 <div>
                   <p>Dirección</p>
-                  <input 
+                  <input
                     type="text"
                     name='direccion'
                     value={formData.direccion}
@@ -747,7 +747,7 @@ function CreateStudent() {
                 </div>
                 <div>
                   <p>Ocupación</p>
-                  <input 
+                  <input
                     type="text"
                     name='ocupacion'
                     value={formData.ocupacion}
@@ -759,7 +759,7 @@ function CreateStudent() {
                 </div>
                 <div>
                   <p>Correo</p>
-                  <input 
+                  <input
                     type="text"
                     name='correo'
                     value={formData.correo}
@@ -790,7 +790,7 @@ function CreateStudent() {
 
                 <div>
                   <p>Numero de Cuenta</p>
-                  <input 
+                  <input
                     type="text"
                     name='cuenta_banco'
                     value={formData.cuenta_banco}
@@ -805,7 +805,7 @@ function CreateStudent() {
               <section className='sections-create-student'>
                 <div>
                   <p>Código</p>
-                  <input 
+                  <input
                     type="number"
                     name='codigo_patria'
                     value={formData.codigo_patria}
@@ -813,11 +813,12 @@ function CreateStudent() {
                     placeholder='00025...'
                     className='medium-input'
                     onChange={handleChange}
+                    min="0"
                   />
                 </div>
                 <div>
                   <p>Serial</p>
-                  <input 
+                  <input
                     type="number"
                     name='serial_patria'
                     value={formData.serial_patria}
@@ -825,14 +826,15 @@ function CreateStudent() {
                     placeholder='0000458...'
                     className='medium-input'
                     onChange={handleChange}
+                    min="0"
                   />
                 </div>
               </section>
-              
+
               <section className='sections-create-student'>
                 <div>
                   <p>Comités de la 058</p>
-                  <input 
+                  <input
                     type="text"
                     name='comites_058'
                     value={formData.comites_058}
@@ -890,7 +892,7 @@ function CreateStudent() {
           )}
 
           {currentStep === 3 && (
-            <motion.div 
+            <motion.div
             initial={{ opacity:0 }}
             animate={{ opacity:1 }}
             transition={{ duration:0.8 }}
@@ -902,7 +904,7 @@ function CreateStudent() {
 
         </form>
       </motion.div>
-    
+
   )
 }
 
